@@ -1,0 +1,9 @@
+*.exe
+*.exe~
+bin/
+.env
+.git
+coverage.out
+deploy/
+docker-compose.yml
+README.md

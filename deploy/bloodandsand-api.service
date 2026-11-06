@@ -1,0 +1,21 @@
+# /etc/systemd/system/bloodandsand-api.service
+[Unit]
+Description=Blood & Sand API (Go)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=bloodandsand
+Group=bloodandsand
+WorkingDirectory=/opt/bloodandsand-api
+EnvironmentFile=/opt/bloodandsand-api/.env
+ExecStart=/opt/bloodandsand-api/api
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

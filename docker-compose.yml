@@ -1,0 +1,28 @@
+# Local development: PostgreSQL 10 (same major as the shared server) + the API.
+#   docker compose up -d db          # only the database
+#   docker compose up --build        # database + API
+services:
+  db:
+    image: postgres:10-alpine
+    environment:
+      POSTGRES_USER: bloodandsand
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: bloodandsand
+    ports: ["55432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bloodandsand"]
+      interval: 3s
+      retries: 10
+
+  api:
+    build: .
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://bloodandsand:secret@db:5432/bloodandsand?sslmode=disable
+    ports: ["8088:8088"]
+    depends_on:
+      db: { condition: service_healthy }
+
+volumes:
+  pgdata:
