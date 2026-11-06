@@ -12,10 +12,10 @@ FROM alpine:3.22
 RUN apk add --no-cache ca-certificates tzdata && adduser -D -H bloodandsand
 COPY --from=build /out/bloodandsand-api /usr/local/bin/bloodandsand-api
 USER bloodandsand
-ENV PORT=8088 \
+ENV PORT=4001 \
     APP_ENV=production \
     TZ=America/Santiago
-EXPOSE 8088
+EXPOSE 4001
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
     CMD wget -q -O /dev/null "http://127.0.0.1:${PORT}/api/health" || exit 1
 ENTRYPOINT ["/usr/local/bin/bloodandsand-api"]
